@@ -1,1 +1,1 @@
-HOST_URL = 'www.asianodds.com'
+HOST_URL = 'http://www.asianodds.com'
