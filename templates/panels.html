@@ -7,13 +7,16 @@
     <meta name="author" content="Dashboard">
     <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
 
-    <title>DASHGUM - Bootstrap Admin Template</title>
+    <title>AsianOdds - Web App</title>
 
     <!-- Bootstrap core CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
     <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        
+    <link rel="stylesheet" type="text/css" href="assets/css/zabuto_calendar.css">
+    <link rel="stylesheet" type="text/css" href="assets/js/gritter/css/jquery.gritter.css" />
+    <link rel="stylesheet" type="text/css" href="assets/lineicons/style.css">
+
     <!-- Custom styles for this template -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link href="assets/css/style-responsive.css" rel="stylesheet">
@@ -39,147 +42,9 @@
                   <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
               </div>
             <!--logo start-->
-            <a href="index.html" class="logo"><b>DASHGUM FREE</b></a>
+            <a href="index.html" class="logo"><b>AsianOdds Web App</b></a>
             <!--logo end-->
             <div class="nav notify-row" id="top_menu">
-                <!--  notification start -->
-                <ul class="nav top-menu">
-                    <!-- settings start -->
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                            <i class="fa fa-tasks"></i>
-                            <span class="badge bg-theme">4</span>
-                        </a>
-                        <ul class="dropdown-menu extended tasks-bar">
-                            <div class="notify-arrow notify-arrow-green"></div>
-                            <li>
-                                <p class="green">You have 4 pending tasks</p>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">DashGum Admin Panel</div>
-                                        <div class="percent">40%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                            <span class="sr-only">40% Complete (success)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Database Update</div>
-                                        <div class="percent">60%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                            <span class="sr-only">60% Complete (warning)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Product Development</div>
-                                        <div class="percent">80%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                            <span class="sr-only">80% Complete</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <div class="task-info">
-                                        <div class="desc">Payments Sent</div>
-                                        <div class="percent">70%</div>
-                                    </div>
-                                    <div class="progress progress-striped">
-                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
-                                            <span class="sr-only">70% Complete (Important)</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="external">
-                                <a href="#">See All Tasks</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- settings end -->
-                    <!-- inbox dropdown start-->
-                    <li id="header_inbox_bar" class="dropdown">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="badge bg-theme">5</span>
-                        </a>
-                        <ul class="dropdown-menu extended inbox">
-                            <div class="notify-arrow notify-arrow-green"></div>
-                            <li>
-                                <p class="green">You have 5 new messages</p>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <span class="photo"><img alt="avatar" src="assets/img/ui-zac.jpg"></span>
-                                    <span class="subject">
-                                    <span class="from">Zac Snider</span>
-                                    <span class="time">Just now</span>
-                                    </span>
-                                    <span class="message">
-                                        Hi mate, how is everything?
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <span class="photo"><img alt="avatar" src="assets/img/ui-divya.jpg"></span>
-                                    <span class="subject">
-                                    <span class="from">Divya Manian</span>
-                                    <span class="time">40 mins.</span>
-                                    </span>
-                                    <span class="message">
-                                     Hi, I need your help with this.
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <span class="photo"><img alt="avatar" src="assets/img/ui-danro.jpg"></span>
-                                    <span class="subject">
-                                    <span class="from">Dan Rogers</span>
-                                    <span class="time">2 hrs.</span>
-                                    </span>
-                                    <span class="message">
-                                        Love your new Dashboard.
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">
-                                    <span class="photo"><img alt="avatar" src="assets/img/ui-sherman.jpg"></span>
-                                    <span class="subject">
-                                    <span class="from">Dj Sherman</span>
-                                    <span class="time">4 hrs.</span>
-                                    </span>
-                                    <span class="message">
-                                        Please, answer asap.
-                                    </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="index.html#">See all messages</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- inbox dropdown end -->
-                </ul>
-                <!--  notification end -->
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
@@ -188,7 +53,7 @@
             </div>
         </header>
       <!--header end-->
-      
+
       <!-- **********************************************************************************************************************************************************
       MAIN SIDEBAR MENU
       *********************************************************************************************************************************************************** -->
@@ -197,59 +62,11 @@
           <div id="sidebar"  class="nav-collapse ">
               <!-- sidebar menu start-->
               <ul class="sidebar-menu" id="nav-accordion">
-              
-              	  <p class="centered"><a href="profile.html"><img src="assets/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
-              	  <h5 class="centered">Marcel Newman</h5>
-              	  	
                   <li class="mt">
-                      <a href="index.html">
+                      <a class="active" href="index.html">
                           <i class="fa fa-dashboard"></i>
                           <span>Dashboard</span>
                       </a>
-                  </li>
-
-                  <li class="sub-menu">
-                      <a class="active" href="javascript:;" >
-                          <i class="fa fa-desktop"></i>
-                          <span>UI Elements</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="general.html">General</a></li>
-                          <li><a  href="buttons.html">Buttons</a></li>
-                          <li class="active"><a  href="panels.html">Panels</a></li>
-                      </ul>
-                  </li>
-
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-cogs"></i>
-                          <span>Components</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="calendar.html">Calendar</a></li>
-                          <li><a  href="gallery.html">Gallery</a></li>
-                          <li><a  href="todo_list.html">Todo List</a></li>
-                      </ul>
-                  </li>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-book"></i>
-                          <span>Extra Pages</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="blank.html">Blank Page</a></li>
-                          <li><a  href="login.html">Login</a></li>
-                          <li><a  href="lock_screen.html">Lock Screen</a></li>
-                      </ul>
-                  </li>
-                  <li class="sub-menu">
-                      <a href="javascript:;" >
-                          <i class="fa fa-tasks"></i>
-                          <span>Forms</span>
-                      </a>
-                      <ul class="sub">
-                          <li><a  href="form_component.html">Form Components</a></li>
-                      </ul>
                   </li>
                   <li class="sub-menu">
                       <a href="javascript:;" >
@@ -257,8 +74,8 @@
                           <span>Data Tables</span>
                       </a>
                       <ul class="sub">
-                          <li><a  href="basic_table.html">Basic Table</a></li>
-                          <li><a  href="responsive_table.html">Responsive Table</a></li>
+                          <li><a  href="basic_table.html">Raw Data</a></li>
+                          <li><a  href="responsive_table.html">Filtered Data</a></li>
                       </ul>
                   </li>
                   <li class="sub-menu">
@@ -277,7 +94,7 @@
           </div>
       </aside>
       <!--sidebar end-->
-      
+
       <!-- **********************************************************************************************************************************************************
       MAIN CONTENT
       *********************************************************************************************************************************************************** -->
@@ -287,7 +104,7 @@
           	<h3><i class="fa fa-angle-right"></i> Discover Our Panels</h3>
           	<div class="row mt">
           		<div class="col-lg-12">
-          		
+
 					<! -- 1st ROW OF PANELS -->
 					<div class="row">
 						<!-- TWITTER PANEL -->
@@ -298,7 +115,7 @@
 								<p class="user">@Alvrz_is</p>
 							</div>
 						</div><!-- /col-md-4 -->
-						
+
 						<div class="col-lg-4 col-md-4 col-sm-4 mb">
 							<!-- WHITE PANEL - TOP USER -->
 							<div class="white-panel pn">
@@ -319,7 +136,7 @@
 									</div>
 							</div>
 						</div><!-- /col-md-4 -->
-						
+
 						<div class="col-lg-4 col-md-4 col-sm-4 mb">
 							<!-- INSTAGRAM PANEL -->
 							<div class="instagram-panel pn">
@@ -331,7 +148,7 @@
 							</div>
 						</div><!-- /col-md-4 -->
 					</div><! --/END 1ST ROW OF PANELS -->
-					
+
 					<! -- 2ND ROW OF PANELS -->
 					<div class="row">
 						<! -- TODO PANEL -->
@@ -346,7 +163,7 @@
 							    <input type='submit' value='All Done!' id='submit'/>
 							</div>
 						</div><! --/col-md-4 -->
-						
+
 						<! -- PROFILE 01 PANEL -->
 						<div class="col-lg-4 col-md-4 col-sm-4 mb">
 							<div class="content-panel pn">
@@ -362,7 +179,7 @@
 								</div>
 							</div><! --/content-panel -->
 						</div><! --/col-md-4 -->
-						
+
 						<! -- PROFILE 02 PANEL -->
 						<div class="col-lg-4 col-md-4 col-sm-4 mb">
 							<div class="content-panel pn">
@@ -380,7 +197,7 @@
 							</div><! --/panel -->
 						</div><!--/ col-md-4 -->
 					</div><! --/END 2ND ROW OF PANELS -->
-					
+
 					<! -- 3RD ROW OF PANELS -->
 					<!-- Product Panel -->
 					<div class="row">
@@ -393,7 +210,7 @@
 								<button class="btn btn-small btn-theme04">FULL REPORT</button>
 							</div>
 						</div><! --/col-md-4 -->
-						
+
 						<! -- Spotify Panel -->
 						<div class="col-lg-4 col-md-4 col-sm-4 mb">
 							<div class="content-panel pn">
@@ -411,7 +228,7 @@
 								<p class="followers"><i class="fa fa-user"></i> 576,000 FOLLOWERS</p>
 							</div>
 						</div><! --/col-md-4-->
-					
+
 						<! -- Blog Panel -->
 						<div class="col-lg-4 col-md-4 col-sm-4 mb">
 							<div class="content-panel pn">
@@ -425,7 +242,7 @@
 							</div>
 						</div><!-- /col-md-4-->
 					</div><! -- END 3RD ROW OF PANELS -->
-          		
+
                       <!-- CHART PANELS -->
                       <div class="row">
                       	<div class="col-md-4 col-sm-4 mb">
@@ -457,7 +274,7 @@
 	                      		</div>
 	                      	</div><! --/grey-panel -->
                       	</div><!-- /col-md-4-->
-                      	
+
 
                       	<div class="col-md-4 col-sm-4 mb">
                       		<div class="darkblue-panel pn">
@@ -513,8 +330,8 @@
 					  		</div>
 					  	</div><! --/col-md-4 -->
                     </div><!-- /END CHART - 4TH ROW OF PANELS -->
-                    
-                    
+
+
 					<! -- 5TH ROW OF PANELS -->
 					<div class="row">
 						<div class="col-md-4 col-sm-4 mb">
@@ -529,7 +346,7 @@
 								<p class="mt"><b>$ 17,980</b><br/>Month Income</p>
 							</div>
 						</div><!-- /col-md-4 -->
-					
+
                       	<div class="col-md-4 col-sm-4 mb">
 					        <div class="stock card">
 					        	<div class="stock-chart">
@@ -551,7 +368,7 @@
 								</div>
 					        </div>
 						</div><! -- /col-md-4 -->
-						
+
                       	<div class="col-md-4 col-sm-4 mb">
                       		<div class="darkblue-panel pn">
                       			<div class="darkblue-header">
@@ -579,7 +396,7 @@
 								<h4>BUDAPEST</h4>
 							</div>
 						</div><!-- /col-md-4-->
-						
+
 						<!-- WEATHER-2 PANEL -->
 						<div class="col-lg-4 col-md-4 col-sm-4 mb">
 							<div class="weather-2 pn">
@@ -594,7 +411,7 @@
 									</div>
 								</div><!-- /weather-2 header -->
 								<div class="row centered">
-									<img src="assets/img/ny.jpg" class="img-circle" width="120">			
+									<img src="assets/img/ny.jpg" class="img-circle" width="120">
 								</div>
 								<div class="row data">
 									<div class="col-sm-6 col-xs-6 goleft">
@@ -610,7 +427,7 @@
 								</div>
 							</div>
 						</div><! --/col-md-4 -->
-						
+
 						<!-- WEATHER-3 PANEL -->
 						<div class="col-lg-4 col-md-4 col-sm-4 mb">
 							<div class="weather-3 pn centered">
@@ -631,10 +448,10 @@
 						</div><! --/col-md-4 -->
 					</div><!-- /END 6TH ROW OF PANELS -->
 
-					
+
           		</div>
           	</div>
-			
+
 		</section><! --/wrapper -->
       </section><!-- /MAIN CONTENT -->
 
@@ -663,9 +480,9 @@
     <script src="assets/js/common-scripts.js"></script>
 
     <!--script for this page-->
-    <script src="assets/js/sparkline-chart.js"></script>    
-    
-    
+    <script src="assets/js/sparkline-chart.js"></script>
+
+
   <script>
       //custom select box
 
