@@ -1,7 +1,7 @@
-from typing import Optional
-from .config import HOST_URL
 import requests
 from bs4 import BeautifulSoup
+
+from .config import HOST_URL
 
 
 class scrape:
