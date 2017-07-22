@@ -1,5 +1,5 @@
 import requests
-from bs4 import BeautifulSoup
+import pandas
 
 from .config import HOST_URL
 
@@ -22,7 +22,17 @@ class scrape:
         req_str = HOST_URL
         response = requests.get(url=req_str)
         assert response.status_code == 200
-        soup = BeautifulSoup(response.content)
+        return response.text
 
-        tbl = soup.findAll('table')[4]
-        return tbl
+
+    def get_odds(self, config=None):
+        """
+        Method to return a Dataframe object of scraped results.
+        :param config: search criteria, type dict
+        :return: Pandas Dataframe object
+        """
+        scr_data = pandas.read_html(self._get())[4]
+        if config:
+            pass #return filtered data here
+
+        return scr_data.to_html()

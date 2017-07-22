@@ -13,9 +13,9 @@ def index():
 
 @app.route('/basic_table.html', methods=['POST', 'GET'])
 def raw_data():
-    r = s._get()
+    r = s.get_odds()
     with app.app_context():
-        return render_template('/table_results.html', result=r)
+        return render_template('/basic_table.html', result=r)
 
 
 if __name__ == "__main__":
