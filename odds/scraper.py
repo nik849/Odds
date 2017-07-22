@@ -1,5 +1,5 @@
-import requests
 import pandas
+import requests
 
 from .config import HOST_URL
 
@@ -24,7 +24,6 @@ class scrape:
         assert response.status_code == 200
         return response.text
 
-
     def get_odds(self, config=None):
         """
         Method to return a Dataframe object of scraped results.
@@ -33,6 +32,6 @@ class scrape:
         """
         scr_data = pandas.read_html(self._get())[4]
         if config:
-            pass #return filtered data here
+            pass
 
         return scr_data.to_html()
