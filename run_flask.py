@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 
-from odds.scraper import scrape
 from odds.config import CONFIG
+from odds.scraper import scrape
 
 app = Flask(__name__)
 s = scrape()
