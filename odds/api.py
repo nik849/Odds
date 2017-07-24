@@ -1,6 +1,6 @@
 import requests
 
-from .config import API_URL, test_token
+from .config import API_URL
 from .errors import OddsError, TelegramTokenError
 
 
@@ -9,7 +9,7 @@ class telegram:
     Wrapper Class for the Telegram API.
     Uses requests to get the returned json object.
     """
-    def __init__(self, token=test_token):
+    def __init__(self, token):
         """
         :param token: Telegram API token, Required.
         """

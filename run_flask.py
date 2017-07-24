@@ -1,10 +1,12 @@
 from flask import Flask, render_template
 
-from odds.config import CONFIG
+from odds.config import CONFIG, test_token
+from odds.api import telegram
 from odds.scraper import scrape
 
 app = Flask(__name__)
 s = scrape()
+t = telegram(token=test_token)
 
 
 @app.route('/')
