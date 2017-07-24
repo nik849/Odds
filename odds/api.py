@@ -1,7 +1,8 @@
 import requests
 
 from .config import API_URL, test_token
-from .errors import TelegramTokenError, OddsError
+from .errors import OddsError, TelegramTokenError
+
 
 class telegram:
     """
