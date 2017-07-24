@@ -1,6 +1,6 @@
 import requests
 
-from .config import API_URL, test_token, chat_id
+from .config import API_URL, test_token
 from .errors import OddsError, TelegramTokenError
 
 
