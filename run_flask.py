@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 
-from odds.config import CONFIG, test_token
 from odds.api import telegram
+from odds.config import CONFIG, test_token
 from odds.scraper import scrape
 
 app = Flask(__name__)
