@@ -1,6 +1,6 @@
 import requests
 
-from .config import API_URL, test_token
+from .config import API_URL, test_token, chat_id
 from .errors import OddsError, TelegramTokenError
 
 
@@ -24,7 +24,7 @@ class telegram:
         Method for making a request to Telegram API
         :param api_endpoint: Telegram API endpoint
         """
-        req_str = API_URL + self.token + '/' + api_endpoint
+        req_str = API_URL + 'bot' + self.token + '/' + api_endpoint
         print(req_str)
         response = requests.get(url=req_str, params=self.params)
         return response.json()
@@ -32,6 +32,7 @@ class telegram:
     def send_message(self, msg: str, chat_id: str, **kwargs):
         """
         :param msg: Message to be sent to users
+        :param chat_id: Id of the user/channel to send message to.
         """
         if kwargs:
             self.params.update(**kwargs)
