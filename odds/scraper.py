@@ -35,3 +35,15 @@ class scrape:
             pass
 
         return scr_data.to_html()
+
+    def download(self, config=None):
+        """
+        Method to download .csv file of scraped results
+        :param config: search criteria, type dict
+        :return: Pandas Dataframe object
+        """
+        scr_data = pandas.read_html(self._get())[4]
+        if config:
+            pass
+
+        return scr_data

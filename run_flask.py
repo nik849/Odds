@@ -1,3 +1,5 @@
+import time
+
 from flask import Flask, render_template
 
 from odds.api import telegram
@@ -9,9 +11,14 @@ s = scrape()
 t = telegram(token=test_token)
 
 
-@app.route('/')
+@app.route('/', methods=['POST', 'GET'])
+def home():
+    return render_template('/index.html')
+
+
+@app.route('/index.html', methods=['POST', 'GET'])
 def index():
-    return render_template('index.html')
+    return render_template('/index.html')
 
 
 @app.route('/basic_table.html', methods=['POST', 'GET'])
@@ -26,6 +33,18 @@ def filtered_data():
     r = s.get_odds(CONFIG)
     with app.app_context():
         return render_template('/responsive_table.html', tables=[r])
+
+
+@app.route('/config.html', methods=['POST', 'GET'])
+def config():
+    return render_template('/config.html')
+
+
+@app.route('/download', methods=['POST', 'GET'])
+def download():
+    r = s.download(CONFIG)
+    r.to_csv('download_{}.csv'.format(time.strftime("%Y-%m-%d_%H-%M")))
+    return (''), 204
 
 
 if __name__ == "__main__":
