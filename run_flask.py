@@ -1,6 +1,6 @@
 import time
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from odds.api import telegram
 from odds.config import CONFIG, test_token
@@ -13,7 +13,13 @@ t = telegram(token=test_token)
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    return render_template('/index.html')
+    if request.method == 'POST':
+        data = request.json
+        print(data)
+        return render_template('/index.html')
+        
+    elif request.method == 'GET':
+        return render_template('/index.html')
 
 
 @app.route('/index.html', methods=['POST', 'GET'])

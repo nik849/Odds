@@ -1,6 +1,6 @@
 import requests
 
-from .config import API_URL
+from .config import API_URL, WEBHOOK_URL
 from .errors import OddsError, TelegramTokenError
 
 
@@ -25,7 +25,6 @@ class telegram:
         :param api_endpoint: Telegram API endpoint
         """
         req_str = API_URL + 'bot' + self.token + '/' + api_endpoint
-        print(req_str)
         response = requests.get(url=req_str, params=self.params)
         return response.json()
 
@@ -45,3 +44,31 @@ class telegram:
             raise OddsError(str(data['description']))
 
         return data['result']
+
+    def update(self):
+        """
+        Fetches new messages sent to the Bot.
+        :return: array of json objects containing responses.
+        """
+        req_str = API_URL + 'bot' + self.token + '/getUpdates'
+        response = requests.get(url=req_str)
+        data = response.json()
+
+        if not data['ok']:
+            raise OddsError(str(data['description']))
+
+        results = data['result']
+
+        return [{'id': updates['update_id'],
+                 'message': updates['message']
+                 } for updates in results]
+
+    def set_webhook(self, hook_url: str):
+        """
+        Sets the webhook for the telegram bot.
+        :param hook_url: webhook url, found in config
+        """
+        req_str = API_URL + 'bot' + self.token + '/setWebhook'
+        params = {'url': hook_url}
+        response = requests.get(url=req_str, params=params)
+        assert response.status_code == 200
