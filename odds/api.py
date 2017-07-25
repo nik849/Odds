@@ -1,6 +1,6 @@
 import requests
 
-from .config import API_URL, WEBHOOK_URL
+from .config import API_URL
 from .errors import OddsError, TelegramTokenError
 
 

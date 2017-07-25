@@ -17,7 +17,6 @@ def home():
         data = request.json
         print(data)
         return render_template('/index.html')
-        
     elif request.method == 'GET':
         return render_template('/index.html')
 
