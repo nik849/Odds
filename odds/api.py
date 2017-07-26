@@ -69,6 +69,21 @@ class telegram:
         :param hook_url: webhook url, found in config
         """
         req_str = API_URL + 'bot' + self.token + '/setWebhook'
-        params = {'url': hook_url}
+        hook = hook_url + '/hook'
+        params = {'url': hook}
         response = requests.get(url=req_str, params=params)
         assert response.status_code == 200
+
+    def process_message(self, data: object):
+        """
+        Method for processing a request from a telegram user
+        :param data: dict of user name and message
+        :return: search criteria for the scraper
+        """
+        criteria = {'query': None}
+        if data['message'] is not None:
+            criteria['query'] = data['message']
+            self.send_message('loading...', data['user'])
+            print(criteria)
+            return criteria
+        return criteria

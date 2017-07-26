@@ -13,12 +13,7 @@ t = telegram(token=test_token)
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    if request.method == 'POST':
-        data = request.json
-        print(data)
-        return render_template('/index.html')
-    elif request.method == 'GET':
-        return render_template('/index.html')
+    return render_template('/index.html')
 
 
 @app.route('/index.html', methods=['POST', 'GET'])
@@ -35,7 +30,7 @@ def raw_data():
 
 @app.route('/responsive_table.html', methods=['POST', 'GET'])
 def filtered_data():
-    r = s.get_odds(CONFIG)
+    r = s.get_odds(config=CONFIG)
     with app.app_context():
         return render_template('/responsive_table.html', tables=[r])
 
@@ -47,8 +42,21 @@ def config():
 
 @app.route('/download', methods=['POST', 'GET'])
 def download():
-    r = s.download(CONFIG)
+    r = s.download(config=CONFIG)
     r.to_csv('download_{}.csv'.format(time.strftime("%Y-%m-%d_%H-%M")))
+    return (''), 204
+
+
+@app.route('/hook', methods=['POST', 'GET'])
+def handle_messages():
+    if request.method == 'POST':
+        data = request.json
+        text = {'user': data['message']['from']['id'],
+                'message': data['message']['text']}
+        result = t.process_message(text)
+        reply = s.get_odds_telegram(config=result)
+        print(reply)
+        t.send_message(reply, text['user'])
     return (''), 204
 
 
