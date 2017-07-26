@@ -80,7 +80,7 @@ class telegram:
         :param data: dict of user name and message
         :return: search criteria for the scraper
         """
-        criteria = {'query' : None}
+        criteria = {'query': None}
         if data['message'] is not None:
             criteria['query'] = data['message']
             self.send_message('loading...', data['user'])
