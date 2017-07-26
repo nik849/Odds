@@ -32,9 +32,25 @@ class scrape:
         """
         scr_data = pandas.read_html(self._get())[4]
         if config:
-            pass
+            if config['query'] is not None:
+                data = scr_data
+                return data
+        else:
+            return scr_data.to_html()
 
-        return scr_data.to_html()
+    def get_odds_telegram(self, config=None):
+        """
+        Method to return a Dataframe object of scraped results.
+        :param config: search criteria, type dict
+        :return: Pandas Dataframe object
+        """
+        scr_data = pandas.read_html(self._get())[4]
+        if config:
+            if config['query'] is not None:
+                data = scr_data
+                return data
+        else:
+            return scr_data
 
     def download(self, config=None):
         """
@@ -44,6 +60,8 @@ class scrape:
         """
         scr_data = pandas.read_html(self._get())[4]
         if config:
-            pass
-
-        return scr_data
+            if config['query'] is not None:
+                data = scr_data
+                return data
+        else:
+            return scr_data
