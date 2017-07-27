@@ -23,14 +23,14 @@ def index():
 
 @app.route('/basic_table.html', methods=['POST', 'GET'])
 def raw_data():
-    r = s.get_odds()
+    r = s.get_odds_html()
     with app.app_context():
         return render_template('/basic_table.html', tables=[r])
 
 
 @app.route('/responsive_table.html', methods=['POST', 'GET'])
 def filtered_data():
-    r = s.get_odds(config=CONFIG)
+    r = s.get_odds_html(config=CONFIG)
     with app.app_context():
         return render_template('/responsive_table.html', tables=[r])
 
@@ -54,7 +54,7 @@ def handle_messages():
         text = {'user': data['message']['from']['id'],
                 'message': data['message']['text']}
         result = t.process_message(text)
-        reply = s.get_odds_telegram(config=result)
+        reply = s.get_odds_obj(config=result)
         print(reply)
         t.send_message(reply, text['user'])
     return (''), 204
