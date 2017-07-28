@@ -4,7 +4,7 @@ import pandas
 from flask import Flask, render_template, request
 
 from odds.api import telegram
-from odds.config import CONFIG, test_token, test_id
+from odds.config import CONFIG, test_id, test_token
 from odds.scraper import scrape
 from odds.utils import predictions
 
