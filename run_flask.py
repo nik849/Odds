@@ -18,6 +18,7 @@ def home():
     games = s.get_odds_obj()
     del games['Last 200 Started Games - Odds From 188bet.com']
     tables = []
+    tips = []
     for name, game in games.items():
         print(name)
         p = predictions(game)
@@ -25,12 +26,14 @@ def home():
         tables.append(data)
         for key, val in preds.items():
             if val != 0:
-                t.send_message(f'{name} - {key}:{val}', test_id)
+                tip = f'{name} - {key}:{val}'
+                tips.append(tip)
+                t.send_message(tip, test_id)
     df = pandas.DataFrame()
     for table in tables:
         df = df.append(table)
 
-    return render_template('/index.html')
+    return render_template('/index.html', tips=tips)
 
 
 @app.route('/index.html', methods=['POST', 'GET'])
