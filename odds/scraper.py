@@ -24,7 +24,7 @@ class scrape:
         assert response.status_code == 200
         return response.text
 
-    def get_odds(self, config=None):
+    def get_odds_html(self, config=None):
         """
         Method to return a Dataframe object of scraped results.
         :param config: search criteria, type dict
@@ -36,21 +36,29 @@ class scrape:
                 data = scr_data
                 return data
         else:
-            return scr_data.to_html()
+            return scr_data.fillna(value='').to_html()
 
-    def get_odds_telegram(self, config=None):
+    def get_odds_obj(self, config=None):
         """
         Method to return a Dataframe object of scraped results.
         :param config: search criteria, type dict
         :return: Pandas Dataframe object
         """
-        scr_data = pandas.read_html(self._get())[4]
+        df = pandas.read_html(self._get())[4]
+        indexes = df[df[0].str.contains(' - ', na=False) |
+                     df[0].isnull()].index.tolist()
+        df_dict = {}
+        for i in list(range(len(indexes)-1)):
+            current = indexes[i]
+            nex = indexes[i + 1]
+            df_dict[str(df.ix[indexes[i], 0])] = df[current:nex]
+
         if config:
             if config['query'] is not None:
-                data = scr_data
+                data = df_dict
                 return data
         else:
-            return scr_data
+            return df_dict
 
     def download(self, config=None):
         """
