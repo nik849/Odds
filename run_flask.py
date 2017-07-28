@@ -22,7 +22,7 @@ def home():
     for name, game in games.items():
         print(name)
         p = predictions(game)
-        [data, preds] = p.return_predictions()
+        data, preds = p.return_predictions()
         tables.append(data)
         for key, val in preds.items():
             if val != 0:
@@ -56,8 +56,8 @@ def filtered_data():
     for name, game in games.items():
         print(name)
         p = predictions(game)
-        [data, preds] = p.return_predictions().to_html(
-                            classes="table table-hover")
+        data, preds = p.return_predictions()
+        data = data.to_html(classes="table table-hover")
         tables.append(data)
     tables = u''.join(tables)
 
@@ -85,7 +85,7 @@ def download_preds():
     for name, game in games.items():
         print(name)
         p = predictions(game)
-        [data, preds] = p.return_predictions()
+        data, preds = p.return_predictions()
         tables.append(data)
     df = pandas.DataFrame()
     for table in tables:

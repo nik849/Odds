@@ -48,7 +48,7 @@
             </div>
             <div class="top-menu">
             	<ul class="nav pull-right top-menu">
-                    <li><a class="logout" href="/download">Download</a></li>
+                    <li><a class="logout" href="/download_preds">Download</a></li>
             	</ul>
             </div>
         </header>
@@ -100,17 +100,8 @@
       <section id="main-content">
           <section class="wrapper">
 					<div class="row">
-					</div><!-- /row -->
-
-					<div class="row mt">
-                      <!--CUSTOM CHART START -->
-                      {{ tips | safe }}
-					</div><!-- /row -->
-
-                  </div><!-- /col-lg-9 END SECTION MIDDLE -->
-
-
-
+            <h3><i class="fa fa-angle-right"></i> Latest Predictions</h3>
+					</div>{% include "tips.html" %}</div><!-- /col-lg-9 END SECTION MIDDLE -->
       <!--main content end-->
       <!--footer start-->
       <footer class="site-footer">
