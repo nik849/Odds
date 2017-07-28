@@ -3,9 +3,6 @@
   <head>
   </head>
   <body>
-    {% for table in tables %}
-      <h2></h2>
-      {{ table|safe }}
-    {% endfor %}
+      {{ tables | safe }}
   </body>
 </html>

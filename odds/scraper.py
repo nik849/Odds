@@ -36,7 +36,7 @@ class scrape:
                 data = scr_data
                 return data
         else:
-            return scr_data.to_html()
+            return scr_data.fillna(value='').to_html()
 
     def get_odds_obj(self, config=None):
         """
@@ -50,7 +50,7 @@ class scrape:
         for i in list(range(len(indexes)-1)):
             current = indexes[i]
             nex = indexes[i + 1]
-            df_dict[str(df.ix[indexes[i],0])] = df[current:nex]
+            df_dict[str(df.ix[indexes[i], 0])] = df[current:nex]
 
         if config:
             if config['query'] is not None:

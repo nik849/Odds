@@ -1,10 +1,12 @@
 import time
 
+import pandas
 from flask import Flask, render_template, request
 
 from odds.api import telegram
 from odds.config import CONFIG, test_token
 from odds.scraper import scrape
+from odds.utils import predictions
 
 app = Flask(__name__)
 s = scrape()
@@ -25,14 +27,23 @@ def index():
 def raw_data():
     r = s.get_odds_html()
     with app.app_context():
-        return render_template('/basic_table.html', tables=[r])
+        return render_template('/basic_table.html', tables=r)
 
 
 @app.route('/responsive_table.html', methods=['POST', 'GET'])
 def filtered_data():
-    r = s.get_odds_html(config=CONFIG)
+    games = s.get_odds_obj()
+    del games['Last 200 Started Games - Odds From 188bet.com']
+    tables = []
+    for name, game in games.items():
+        print(name)
+        p = predictions(game)
+        data = p.return_predictions().to_html(classes="table table-hover")
+        tables.append(data)
+    tables = u''.join(tables)
+
     with app.app_context():
-        return render_template('/responsive_table.html', tables=[r])
+        return render_template('/responsive_table.html', tables=tables)
 
 
 @app.route('/config.html', methods=['POST', 'GET'])
@@ -44,6 +55,24 @@ def config():
 def download():
     r = s.download(config=CONFIG)
     r.to_csv('download_{}.csv'.format(time.strftime("%Y-%m-%d_%H-%M")))
+    return (''), 204
+
+
+@app.route('/download_preds', methods=['POST', 'GET'])
+def download_preds():
+    games = s.get_odds_obj()
+    del games['Last 200 Started Games - Odds From 188bet.com']
+    tables = []
+    for name, game in games.items():
+        print(name)
+        p = predictions(game)
+        data = p.return_predictions()
+        tables.append(data)
+    df = pandas.DataFrame()
+    for table in tables:
+        df = df.append(table)
+    print(df)
+    df.to_csv('download_preds{}.csv'.format(time.strftime("%Y-%m-%d_%H-%M")))
     return (''), 204
 
 
