@@ -55,7 +55,7 @@ class predictions:
         result = transform.T.append(pandas.DataFrame.from_dict(preds,
                                                                orient='index')
                                     .T)
-        return result.fillna(value='')
+        return [result.fillna(value=''), preds]
 
     def config_1(self):
         if self.D15 > 0.24 and self.D15 < self.F15 and self.G15 < self.G14 \

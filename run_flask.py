@@ -4,7 +4,7 @@ import pandas
 from flask import Flask, render_template, request
 
 from odds.api import telegram
-from odds.config import CONFIG, test_token
+from odds.config import CONFIG, test_id, test_token
 from odds.scraper import scrape
 from odds.utils import predictions
 
@@ -15,7 +15,25 @@ t = telegram(token=test_token)
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    return render_template('/index.html')
+    games = s.get_odds_obj()
+    del games['Last 200 Started Games - Odds From 188bet.com']
+    tables = []
+    tips = []
+    for name, game in games.items():
+        print(name)
+        p = predictions(game)
+        data, preds = p.return_predictions()
+        tables.append(data)
+        for key, val in preds.items():
+            if val != 0:
+                tip = f'{name} - {key}:{val}'
+                tips.append(tip)
+                t.send_message(tip, test_id)
+    df = pandas.DataFrame()
+    for table in tables:
+        df = df.append(table)
+
+    return render_template('/index.html', tips=tips)
 
 
 @app.route('/index.html', methods=['POST', 'GET'])
@@ -38,7 +56,8 @@ def filtered_data():
     for name, game in games.items():
         print(name)
         p = predictions(game)
-        data = p.return_predictions().to_html(classes="table table-hover")
+        data, preds = p.return_predictions()
+        data = data.to_html(classes="table table-hover")
         tables.append(data)
     tables = u''.join(tables)
 
@@ -66,12 +85,11 @@ def download_preds():
     for name, game in games.items():
         print(name)
         p = predictions(game)
-        data = p.return_predictions()
+        data, preds = p.return_predictions()
         tables.append(data)
     df = pandas.DataFrame()
     for table in tables:
         df = df.append(table)
-    print(df)
     df.to_csv('download_preds{}.csv'.format(time.strftime("%Y-%m-%d_%H-%M")))
     return (''), 204
 
