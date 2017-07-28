@@ -9,6 +9,8 @@ class predictions:
         :param data: DataFrame object.
         """
         self.data = data
+        if int(len(data)-1) / 2 > 1:
+            print('')
 
         self.team_a = self.data.ix[self.data.index[1], 1]
         self.team_b = self.data.ix[self.data.index[2], 0]
