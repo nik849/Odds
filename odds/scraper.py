@@ -45,7 +45,8 @@ class scrape:
         :return: Pandas Dataframe object
         """
         df = pandas.read_html(self._get())[4]
-        indexes = df[df[0].str.contains(' - ', na=False)].index.tolist()
+        indexes = df[df[0].str.contains(' - ', na=False) |
+                     df[0].isnull()].index.tolist()
         df_dict = {}
         for i in list(range(len(indexes)-1)):
             current = indexes[i]
