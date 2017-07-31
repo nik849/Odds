@@ -4,7 +4,7 @@ import pandas
 from flask import Flask, render_template, request
 
 from odds.api import telegram
-from odds.config import CONFIG, test_id, test_token
+from odds.config import CONFIG, telegram_id, test_token
 from odds.scraper import scrape
 from odds.utils import predictions
 
@@ -28,7 +28,7 @@ def home():
             if val != 0:
                 tip = f'{name} - {key}:{val}'
                 tips.append(tip)
-                t.send_message(tip, test_id)
+                [t.send_message(tip, _id) for _id in telegram_id]
     df = pandas.DataFrame()
     for table in tables:
         df = df.append(table)
