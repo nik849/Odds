@@ -4,7 +4,7 @@ import pandas
 from flask import Flask, render_template, request
 
 from odds.api import telegram
-from odds.config import CONFIG, telegram_id, test_token
+from odds.config import CONFIG, configs, telegram_id, test_token
 from odds.scraper import scrape
 from odds.utils import predictions
 
@@ -68,6 +68,16 @@ def filtered_data():
 @app.route('/config.html', methods=['POST', 'GET'])
 def config():
     return render_template('/config.html')
+
+
+@app.route('/config_update', methods=['POST', 'GET'])
+def config_update():
+    checks = []
+    for checkbox in configs:
+        value = request.form.get(checkbox)
+        if value:
+            checks.append(checkbox)
+    return (''), 204
 
 
 @app.route('/download', methods=['POST', 'GET'])
