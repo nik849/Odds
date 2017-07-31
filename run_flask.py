@@ -1,7 +1,7 @@
 import time
 
 import pandas
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 
 from odds.api import telegram
 from odds.config import CONFIG, configs, telegram_id, test_token
@@ -9,6 +9,7 @@ from odds.scraper import scrape
 from odds.utils import predictions
 
 app = Flask(__name__)
+app.secret_key = 'key'
 s = scrape()
 t = telegram(token=test_token)
 
@@ -77,13 +78,30 @@ def config_update():
         value = request.form.get(checkbox)
         if value:
             checks.append(checkbox)
-    return (''), 204
+        session['checks_'] = checks
+    return render_template('/config.html', configs=checks, users=telegram_id)
+
+
+@app.route('/user_update', methods=['POST', 'GET'])
+def user_update():
+    user = request.form.get("user_input")
+    if request.form["submit"] == "add":
+        if user:
+            telegram_id.append(user)
+            print(f'{user} added.')
+    elif request.form["submit"] == "remove":
+        if user in telegram_id:
+            if user in telegram_id:
+                telegram_id.remove(user)
+                print(f'{user} removed.')
+    checks = session.get('checks_', None)
+    return render_template('/config.html', configs=checks, users=telegram_id)
 
 
 @app.route('/download', methods=['POST', 'GET'])
 def download():
     r = s.download(config=CONFIG)
-    r.to_csv('download_{}.csv'.format(time.strftime("%Y-%m-%d_%H-%M")))
+    r.to_csv(f'download_{time.strftime("%Y-%m-%d_%H-%M")}.csv')
     return (''), 204
 
 
@@ -100,7 +118,7 @@ def download_preds():
     df = pandas.DataFrame()
     for table in tables:
         df = df.append(table)
-    df.to_csv('download_preds{}.csv'.format(time.strftime("%Y-%m-%d_%H-%M")))
+    df.to_csv(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.csv')
     return (''), 204
 
 

@@ -1,6 +1,6 @@
 # Odds
 Web scraping, data gathering from online odds
-Requires Python 3.5+
+Requires Python 3.6+
 
 Getting Started
 ==================
@@ -21,4 +21,3 @@ you set up the bot with BotFather on Telegram.
 
   * Run the WebApp:
 ```python run_flask.py```
-  
