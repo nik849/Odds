@@ -33,19 +33,19 @@ class predictions:
         :return: DataFrame obj of match and predictions.
         """
         _configs = {
-            'Config 1': self.config_1(), 'Config 2': self.config_2(),
-            'Config 3': self.config_3(), 'Config 4': self.config_4(),
-            'Config 5': self.config_5(), 'Config 6': self.config_6(),
-            'Config 7': self.config_7(), 'Config 8': self.config_8(),
-            'Config 8a': self.config_8a(), 'Config 9': self.config_9(),
-            'Config 9a': self.config_9a(), 'Config 10': self.config_10(),
-            'Config 10a': self.config_10a(), 'Config 11': self.config_11(),
-            'Config 11a': self.config_11a(), 'Config 12': self.config_12(),
-            'Config 13': self.config_13(), 'Config 14': self.config_14(),
-            'Config 15': self.config_15(), 'Config 15a': self.config_15a(),
-            'Config 16': self.config_16(), 'Config 17': self.config_17(),
-            'Config 17a': self.config_17a(), 'Config 18': self.config_18(),
-            'Config 18a': self.config_18a()
+            'config_1': self.config_1(), 'config_2': self.config_2(),
+            'config_3': self.config_3(), 'config_4': self.config_4(),
+            'config_5': self.config_5(), 'config_6': self.config_6(),
+            'config_7': self.config_7(), 'config_8': self.config_8(),
+            'config_8a': self.config_8a(), 'config_9': self.config_9(),
+            'config_9a': self.config_9a(), 'config_10': self.config_10(),
+            'config_10a': self.config_10a(), 'config_11': self.config_11(),
+            'config_11a': self.config_11a(), 'config_12': self.config_12(),
+            'config_13': self.config_13(), 'config_14': self.config_14(),
+            'config_15': self.config_15(), 'config_15a': self.config_15a(),
+            'config_16': self.config_16(), 'config_17': self.config_17(),
+            'config_17a': self.config_17a(), 'config_18': self.config_18(),
+            'config_18a': self.config_18a()
         }
         transform = self.data.T.fillna(value='')
         temp_list = list(transform.iloc[:, 2])
@@ -55,8 +55,7 @@ class predictions:
         result = transform.T.append(pandas.DataFrame.from_dict(_configs,
                                                                orient='index')
                                     .T)
-        preds = {}
-        return [result.fillna(value=''), preds]
+        return [result.fillna(value=''), _configs]
 
     def config_1(self):
         if self.D15 > 0.24 and self.D15 < self.F15 and self.G15 < self.G14 \

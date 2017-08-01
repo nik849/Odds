@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="refresh" content="900"
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
@@ -99,9 +100,16 @@
       <!--main content start-->
       <section id="main-content">
           <section class="wrapper">
-					<div class="row">
             <h3><i class="fa fa-angle-right"></i> Latest Predictions</h3>
-					</div>{% include "tips.html" %}</div><!-- /col-lg-9 END SECTION MIDDLE -->
+					<div>{% include "tips.html" %}</div><!-- /col-lg-9 END SECTION MIDDLE -->
+            <h3><i class="fa fa-angle-right"></i> Latest Hits</h3>
+              <div class="tab-pane" id="chartjs">
+                  <div class="panel-body text-center">
+
+                      <canvas id="line" height="300" width="400"></canvas>
+                    </div>
+                  </div>
+            <!--custom chart end-->
       <!--main content end-->
       <!--footer start-->
       <footer class="site-footer">
@@ -130,9 +138,12 @@
 
     <!--script for this page-->
     <script src="static/assets/js/sparkline-chart.js"></script>
-	<script src="static/assets/js/zabuto_calendar.js"></script>
+	  <script src="static/assets/js/zabuto_calendar.js"></script>
+    <script src="static/assets/js/chart-master/Chart.js"></script>
+    <script src="static/assets/js/chartjs-conf.js"></script>
+	  <script type="text/javascript">
 
-	<script type="text/javascript">
+
         $(document).ready(function () {
         var unique_id = $.gritter.add({
             // (string | mandatory) the heading of the notification
@@ -152,40 +163,6 @@
         });
 	</script>
 
-	<script type="application/javascript">
-        $(document).ready(function () {
-            $("#date-popover").popover({html: true, trigger: "manual"});
-            $("#date-popover").hide();
-            $("#date-popover").click(function (e) {
-                $(this).hide();
-            });
-
-            $("#my-calendar").zabuto_calendar({
-                action: function () {
-                    return myDateFunction(this.id, false);
-                },
-                action_nav: function () {
-                    return myNavFunction(this.id);
-                },
-                ajax: {
-                    url: "show_data.php?action=1",
-                    modal: true
-                },
-                legend: [
-                    {type: "text", label: "Special event", badge: "00"},
-                    {type: "block", label: "Regular event", }
-                ]
-            });
-        });
-
-
-        function myNavFunction(id) {
-            $("#date-popover").hide();
-            var nav = $("#" + id).data("navigation");
-            var to = $("#" + id).data("to");
-            console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
-        }
-    </script>
 
 
   </body>

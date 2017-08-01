@@ -4,7 +4,7 @@ import pandas
 from flask import Flask, render_template, request, session
 
 from odds.api import telegram
-from odds.config import CONFIG, configs, telegram_id, test_token
+from odds.config import CONFIG, configs, telegram_id, test_token, tips
 from odds.scraper import scrape
 from odds.utils import predictions
 
@@ -19,27 +19,30 @@ def home():
     games = s.get_odds_obj()
     del games['Last 200 Started Games - Odds From 188bet.com']
     tables = []
-    tips = []
+    tips_page = []
     for name, game in games.items():
         print(name)
         p = predictions(game)
         data, preds = p.return_predictions()
         tables.append(data)
-        for key, val in preds.items():
-            if val != 0:
-                tip = f'{name} - {key}:{val}'
-                tips.append(tip)
+        game_time = data.ix[data.index[1], 0]
+        checks = session.get('checks_', None)
+        for key in checks:
+            if preds[key] != 0:
+                tip = f'{game_time} : {name} - {tips[key]}'
+                tips_page.append(tip)
                 [t.send_message(tip, _id) for _id in telegram_id]
     df = pandas.DataFrame()
     for table in tables:
         df = df.append(table)
-
-    return render_template('/index.html', tips=tips)
+    session['tips_page'] = tips_page
+    return render_template('/index.html', tips=tips_page)
 
 
 @app.route('/index.html', methods=['POST', 'GET'])
 def index():
-    return render_template('/index.html')
+    tips_page = session.get('tips_page')
+    return render_template('/index.html', tips=tips_page)
 
 
 @app.route('/basic_table.html', methods=['POST', 'GET'])
