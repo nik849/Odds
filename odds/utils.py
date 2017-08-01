@@ -32,7 +32,7 @@ class predictions:
         """
         :return: DataFrame obj of match and predictions.
         """
-        preds = {
+        _configs = {
             'Config 1': self.config_1(), 'Config 2': self.config_2(),
             'Config 3': self.config_3(), 'Config 4': self.config_4(),
             'Config 5': self.config_5(), 'Config 6': self.config_6(),
@@ -52,9 +52,10 @@ class predictions:
         temp_list.insert(0, 0)
         del temp_list[-1]
         transform.iloc[:, 2] = temp_list
-        result = transform.T.append(pandas.DataFrame.from_dict(preds,
+        result = transform.T.append(pandas.DataFrame.from_dict(_configs,
                                                                orient='index')
                                     .T)
+        preds = {}
         return [result.fillna(value=''), preds]
 
     def config_1(self):
