@@ -1,45 +1,65 @@
+import atexit
 import time
 
 import pandas
+from apscheduler.scheduler import Scheduler
 from flask import Flask, render_template, request, session
 
 from odds.api import telegram
-from odds.config import CONFIG, configs, telegram_id, test_token
+from odds.config import CONFIG, configs, telegram_id, test_token, tips
 from odds.scraper import scrape
 from odds.utils import predictions
 
 app = Flask(__name__)
 app.secret_key = 'key'
+cron = Scheduler(daemon=True)
 s = scrape()
 t = telegram(token=test_token)
+values = [0, 0, 0, 0, 0]
+cron.start()
 
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
+    global values
     games = s.get_odds_obj()
     del games['Last 200 Started Games - Odds From 188bet.com']
     tables = []
-    tips = []
+    tips_page = []
     for name, game in games.items():
         print(name)
         p = predictions(game)
         data, preds = p.return_predictions()
         tables.append(data)
-        for key, val in preds.items():
-            if val != 0:
-                tip = f'{name} - {key}:{val}'
-                tips.append(tip)
-                [t.send_message(tip, _id) for _id in telegram_id]
+        game_time = data.ix[data.index[1], 0]
+        checks = session.get('checks_', None)
+        if checks:
+            for key in checks:
+                if preds[key] != 0:
+                    tip = f'{game_time} : {name} - {tips[key]}'
+                    tips_page.append(tip)
+                    [t.send_message(tip, _id) for _id in telegram_id]
     df = pandas.DataFrame()
     for table in tables:
         df = df.append(table)
-
-    return render_template('/index.html', tips=tips)
+    session['tips_page'] = tips_page
+    labels = ['00:00', '00:15', '00:30', '00:45', '01:00']
+    values.append(len(tips_page))
+    if len(values) > 5:
+        del values[0]
+    session['labels'] = labels
+    session['values'] = values
+    return render_template('/index.html',
+                           tips=tips_page, labels=labels, values=values)
 
 
 @app.route('/index.html', methods=['POST', 'GET'])
 def index():
-    return render_template('/index.html')
+    tips_page = session.get('tips_page')
+    labels = session.get('labels')
+    values = session.get('values')
+    return render_template('/index.html',
+                           tips=tips_page, labels=labels, values=values)
 
 
 @app.route('/basic_table.html', methods=['POST', 'GET'])
@@ -133,6 +153,26 @@ def handle_messages():
         print(reply)
         t.send_message(reply, text['user'])
     return (''), 204
+
+
+@cron.interval_schedule(minutes=15)
+def interval_download():
+    games = s.get_odds_obj()
+    del games['Last 200 Started Games - Odds From 188bet.com']
+    tables = []
+    for name, game in games.items():
+        print(name)
+        p = predictions(game)
+        data, preds = p.return_predictions()
+        tables.append(data)
+    df = pandas.DataFrame()
+    for table in tables:
+        df = df.append(table)
+    df.to_csv(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.csv')
+    return (''), 204
+
+
+atexit.register(lambda: cron.shutdown(wait=False))
 
 
 if __name__ == "__main__":
