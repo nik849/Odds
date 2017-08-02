@@ -22,7 +22,6 @@
     <link href="static/assets/css/style.css" rel="stylesheet">
     <link href="static/assets/css/style-responsive.css" rel="stylesheet">
 
-    <script src="static/assets/js/chart-master/Chart.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -107,7 +106,63 @@
                     <div class="col-lg-6">
                         <div class="content-panel">
                   <div class="panel-body text-center">
-                      <div>{% include "plot.html" %}</div>
+                    <script src='static/assets/js/Chart.min.js'></script>
+                    <canvas id="chart" width="550" height="400"></canvas>
+                    <script>
+
+                       // bar chart data
+                       var barData = {
+                       labels : [{% for item in labels %}
+                                      "{{item}}",
+                                  {% endfor %}],
+                       datasets : [
+                          {
+                                fillColor: "rgba(151,187,205,0.2)",
+                                strokeColor: "rgba(151,187,205,1)",
+                                pointColor: "rgba(151,187,205,1)",
+                                pointStrokeColor: "#fff",
+                                pointHighlightFill: "#fff",
+                                pointHighlightStroke: "rgba(151,187,205,1)",
+                                bezierCurve : false,
+                                data : [{% for item in values %}
+                                          {{item}},
+                                        {% endfor %}]
+                          }]
+                       }
+
+                        Chart.defaults.global.animationSteps = 50;
+                        Chart.defaults.global.tooltipYPadding = 16;
+                        Chart.defaults.global.tooltipCornerRadius = 0;
+                        Chart.defaults.global.tooltipTitleFontStyle = "normal";
+                        Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+                        Chart.defaults.global.animationEasing = "easeOutBounce";
+                        Chart.defaults.global.responsive = false;
+                        Chart.defaults.global.scaleLineColor = "black";
+                        Chart.defaults.global.scaleFontSize = 12;
+
+                       // get bar chart canvas
+                       var mychart = document.getElementById("chart").getContext("2d");
+
+                       steps = 10
+                       max = 20
+                       // draw bar chart
+                       var LineChartDemo = new Chart(mychart).Line(barData, {
+                            scaleOverride: true,
+                            scaleSteps: steps,
+                            scaleStepWidth: Math.ceil(max / steps),
+                            scaleStartValue: 0,
+                            scaleShowVerticalLines: true,
+                            scaleShowGridLines : true,
+                            barShowStroke : true,
+                            scaleShowLabels: true,
+                            bezierCurve: false,
+
+                       });
+
+
+                    </script>
+
+
 
                     </div>
                   </div>

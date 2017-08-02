@@ -6,7 +6,7 @@ from apscheduler.scheduler import Scheduler
 from flask import Flask, render_template, request, session
 
 from odds.api import telegram
-from odds.config import CONFIG, configs, dl, telegram_id, test_token, tips
+from odds.config import CONFIG, configs, telegram_id, test_token, tips
 from odds.scraper import scrape
 from odds.utils import predictions
 
@@ -33,16 +33,15 @@ def home():
         tables.append(data)
         game_time = data.ix[data.index[1], 0]
         checks = session.get('checks_', None)
-        for key in checks:
-            if preds[key] != 0:
-                tip = f'{game_time} : {name} - {tips[key]}'
-                tips_page.append(tip)
-                [t.send_message(tip, _id) for _id in telegram_id]
+        if checks:
+            for key in checks:
+                if preds[key] != 0:
+                    tip = f'{game_time} : {name} - {tips[key]}'
+                    tips_page.append(tip)
+                    [t.send_message(tip, _id) for _id in telegram_id]
     df = pandas.DataFrame()
     for table in tables:
         df = df.append(table)
-    if dl:
-        df.to_csv(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.csv')
     session['tips_page'] = tips_page
     labels = ['00:00', '00:15', '00:30', '00:45', '01:00']
     values.append(len(tips_page))
@@ -50,8 +49,8 @@ def home():
         del values[0]
     session['labels'] = labels
     session['values'] = values
-    return render_template('/plot.html', labels=labels, values=values), \
-        render_template('/index.html', tips=tips_page)
+    return render_template('/index.html',
+                           tips=tips_page, labels=labels, values=values)
 
 
 @app.route('/index.html', methods=['POST', 'GET'])
@@ -59,8 +58,8 @@ def index():
     tips_page = session.get('tips_page')
     labels = session.get('labels')
     values = session.get('values')
-    return render_template('/plot.html', labels=labels, values=values), \
-        render_template('/index.html', tips=tips_page)
+    return render_template('/index.html',
+                           tips=tips_page, labels=labels, values=values)
 
 
 @app.route('/basic_table.html', methods=['POST', 'GET'])
