@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="900"
+    <meta http-equiv="refresh" content="30">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="Dashboard">
@@ -103,12 +103,20 @@
             <h3><i class="fa fa-angle-right"></i> Latest Predictions</h3>
 					<div>{% include "tips.html" %}</div><!-- /col-lg-9 END SECTION MIDDLE -->
             <h3><i class="fa fa-angle-right"></i> Latest Hits</h3>
-              <div class="tab-pane" id="chartjs">
+                <div class="row mt">
+                    <div class="col-lg-6">
+                        <div class="content-panel">
                   <div class="panel-body text-center">
+                      <div>{% include "plot.html" %}</div>
 
-                      <canvas id="line" height="300" width="400"></canvas>
                     </div>
                   </div>
+                          <!-- page start-->
+
+                  </div>
+                      </div>
+                      </section>
+                  </section><!-- /MAIN CONTENT -->
             <!--custom chart end-->
       <!--main content end-->
       <!--footer start-->

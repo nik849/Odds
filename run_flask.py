@@ -1,21 +1,27 @@
+import atexit
 import time
 
 import pandas
+from apscheduler.scheduler import Scheduler
 from flask import Flask, render_template, request, session
 
 from odds.api import telegram
-from odds.config import CONFIG, configs, telegram_id, test_token, tips
+from odds.config import CONFIG, configs, dl, telegram_id, test_token, tips
 from odds.scraper import scrape
 from odds.utils import predictions
 
 app = Flask(__name__)
 app.secret_key = 'key'
+cron = Scheduler(daemon=True)
 s = scrape()
 t = telegram(token=test_token)
+values = [0, 0, 0, 0, 0]
+cron.start()
 
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
+    global values
     games = s.get_odds_obj()
     del games['Last 200 Started Games - Odds From 188bet.com']
     tables = []
@@ -35,14 +41,26 @@ def home():
     df = pandas.DataFrame()
     for table in tables:
         df = df.append(table)
+    if dl:
+        df.to_csv(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.csv')
     session['tips_page'] = tips_page
-    return render_template('/index.html', tips=tips_page)
+    labels = ['00:00', '00:15', '00:30', '00:45', '01:00']
+    values.append(len(tips_page))
+    if len(values) > 5:
+        del values[0]
+    session['labels'] = labels
+    session['values'] = values
+    return render_template('/plot.html', labels=labels, values=values), \
+        render_template('/index.html', tips=tips_page)
 
 
 @app.route('/index.html', methods=['POST', 'GET'])
 def index():
     tips_page = session.get('tips_page')
-    return render_template('/index.html', tips=tips_page)
+    labels = session.get('labels')
+    values = session.get('values')
+    return render_template('/plot.html', labels=labels, values=values), \
+        render_template('/index.html', tips=tips_page)
 
 
 @app.route('/basic_table.html', methods=['POST', 'GET'])
@@ -136,6 +154,26 @@ def handle_messages():
         print(reply)
         t.send_message(reply, text['user'])
     return (''), 204
+
+
+@cron.interval_schedule(minutes=15)
+def interval_download():
+    games = s.get_odds_obj()
+    del games['Last 200 Started Games - Odds From 188bet.com']
+    tables = []
+    for name, game in games.items():
+        print(name)
+        p = predictions(game)
+        data, preds = p.return_predictions()
+        tables.append(data)
+    df = pandas.DataFrame()
+    for table in tables:
+        df = df.append(table)
+    df.to_csv(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.csv')
+    return (''), 204
+
+
+atexit.register(lambda: cron.shutdown(wait=False))
 
 
 if __name__ == "__main__":
