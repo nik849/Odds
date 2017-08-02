@@ -157,19 +157,29 @@ def handle_messages():
 
 @cron.interval_schedule(minutes=15)
 def interval_download():
-    games = s.get_odds_obj()
-    del games['Last 200 Started Games - Odds From 188bet.com']
-    tables = []
-    for name, game in games.items():
-        print(name)
-        p = predictions(game)
-        data, preds = p.return_predictions()
-        tables.append(data)
-    df = pandas.DataFrame()
-    for table in tables:
-        df = df.append(table)
-    df.to_csv(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.csv')
-    return (''), 204
+    with app.test_request_context():
+        games = s.get_odds_obj()
+        del games['Last 200 Started Games - Odds From 188bet.com']
+        tables = []
+        tips_page = []
+        for name, game in games.items():
+            print(name)
+            p = predictions(game)
+            data, preds = p.return_predictions()
+            tables.append(data)
+            game_time = data.ix[data.index[1], 0]
+            checks = session.get('checks_', None)
+            if checks:
+                for key in checks:
+                    if preds[key] != 0:
+                        tip = f'{game_time} : {name} - {tips[key]}'
+                        tips_page.append(tip)
+                        [t.send_message(tip, _id) for _id in telegram_id]
+        df = pandas.DataFrame()
+        for table in tables:
+            df = df.append(table)
+        df.to_csv(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.csv')
+        return (''), 204
 
 
 atexit.register(lambda: cron.shutdown(wait=False))
