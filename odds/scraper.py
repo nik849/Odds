@@ -8,10 +8,11 @@ class scrape:
     """
     Scraping class, using asyncio and aiophttp.
     """
-    def __init__(self):
+    def __init__(self, str: url):
         """
         Initialiser for scrape class.
         """
+        self.URL = url
 
     def _get(self, port=None):
         """
@@ -19,8 +20,8 @@ class scrape:
         :param port: Port for access Optional
         :return: text object containing scraped data
         """
-        req_str = HOST_URL
-        response = requests.get(url=req_str)
+        req_str = self.URL
+        response = requests.get(url=self.URL)
         assert response.status_code == 200
         return response.text
 
