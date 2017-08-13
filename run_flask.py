@@ -6,14 +6,15 @@ from apscheduler.scheduler import Scheduler
 from flask import Flask, render_template, request, session
 
 from odds.api import telegram
-from odds.config import CONFIG, configs, telegram_id, test_token, tips
+from odds.config import (CONFIG, HOST_URL, configs, telegram_id, test_token,
+                         tips)
 from odds.scraper import scrape
 from odds.utils import predictions
 
 app = Flask(__name__)
 app.secret_key = 'key'
 cron = Scheduler(daemon=True)
-s = scrape()
+s = scrape(HOST_URL)
 t = telegram(token=test_token)
 values = [0, 0, 0, 0, 0]
 cron.start()
@@ -115,6 +116,8 @@ def user_update():
                 telegram_id.remove(user)
                 print(f'{user} removed.')
     checks = session.get('checks_', None)
+    if not checks:
+        checks = [0]
     return render_template('/config.html', configs=checks, users=telegram_id)
 
 
