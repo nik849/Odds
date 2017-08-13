@@ -1,14 +1,12 @@
 import pandas
 import requests
 
-from .config import HOST_URL
-
 
 class scrape:
     """
     Scraping class, using asyncio and aiophttp.
     """
-    def __init__(self, str: url):
+    def __init__(self, url):
         """
         Initialiser for scrape class.
         """
@@ -21,7 +19,7 @@ class scrape:
         :return: text object containing scraped data
         """
         req_str = self.URL
-        response = requests.get(url=self.URL)
+        response = requests.get(url=req_str)
         assert response.status_code == 200
         return response.text
 

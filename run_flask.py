@@ -6,7 +6,8 @@ from apscheduler.scheduler import Scheduler
 from flask import Flask, render_template, request, session
 
 from odds.api import telegram
-from odds.config import CONFIG, configs, HOST_URL, telegram_id, test_token, tips
+from odds.config import (CONFIG, configs, HOST_URL, telegram_id,
+                         test_token, tips)
 from odds.scraper import scrape
 from odds.utils import predictions
 
