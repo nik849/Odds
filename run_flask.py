@@ -18,32 +18,12 @@ s = scrape(HOST_URL)
 t = telegram(token=test_token)
 values = [0, 0, 0, 0, 0]
 cron.start()
+tips_page = []
 
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
-    global values
-    games = s.get_odds_obj()
-    del games['Last 200 Started Games - Odds From 188bet.com']
-    tables = []
-    tips_page = []
-    for name, game in games.items():
-        print(name)
-        p = predictions(game)
-        data, preds = p.return_predictions()
-        tables.append(data)
-        game_time = data.ix[data.index[1], 0]
-        checks = configs  # session.get('checks_', None)
-        if checks:
-            for key in checks:
-                if preds[key] != 0:
-                    tip = f'{game_time} : {name} - {tips[key]}'
-                    tips_page.append(tip)
-                    [t.send_message(tip, _id) for _id in telegram_id]
-    df = pandas.DataFrame()
-    for table in tables:
-        df = df.append(table)
-    session['tips_page'] = tips_page
+    global values, tips_page
     labels = ['00:00', '00:15', '00:30', '00:45', '01:00']
     values.append(len(tips_page))
     if len(values) > 5:
@@ -134,7 +114,7 @@ def download_preds():
         games = s.get_odds_obj()
         del games['Last 200 Started Games - Odds From 188bet.com']
         tables = []
-        tips_page = []
+        tips_page_all = []
         for name, game in games.items():
             print(name)
             p = predictions(game)
@@ -146,10 +126,9 @@ def download_preds():
                 for key in checks:
                     if preds[key] != 0:
                         tip = f'{game_time} : {name} - {tips[key]}'
-                        tips_page.append(tip)
-                        [t.send_message(tip, _id) for _id in telegram_id]
+                        tips_page_all.append(tip)
         with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:
-            for tip in tips_page:
+            for tip in tips_page_all:
                 f.write(f'{tip}\n')
         return (''), 204
 
@@ -167,13 +146,13 @@ def handle_messages():
     return (''), 204
 
 
-@cron.interval_schedule(minutes=15)
+@cron.interval_schedule(minutes=1)
 def interval_download():
     with app.test_request_context():
         games = s.get_odds_obj()
         del games['Last 200 Started Games - Odds From 188bet.com']
         tables = []
-        tips_page = []
+        global tips_page
         for name, game in games.items():
             print(name)
             p = predictions(game)
@@ -185,8 +164,9 @@ def interval_download():
                 for key in checks:
                     if preds[key] != 0:
                         tip = f'{game_time} : {name} - {tips[key]}'
-                        tips_page.append(tip)
-                        [t.send_message(tip, _id) for _id in telegram_id]
+                        if tip not in tips_page:
+                            tips_page.append(tip)
+                            [t.send_message(tip, _id) for _id in telegram_id]
         with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:
             for tip in tips_page:
                 f.write(f'{tip}\n')
