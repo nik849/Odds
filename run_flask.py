@@ -1,7 +1,6 @@
 import atexit
 import time
 
-import pandas
 from apscheduler.scheduler import Scheduler
 from flask import Flask, render_template, request, session
 
@@ -146,7 +145,7 @@ def handle_messages():
     return (''), 204
 
 
-@cron.interval_schedule(minutes=1)
+@cron.interval_schedule(minutes=15)
 def interval_download():
     with app.test_request_context():
         games = s.get_odds_obj()
