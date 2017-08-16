@@ -148,7 +148,7 @@ def download_preds():
                         tip = f'{game_time} : {name} - {tips[key]}'
                         tips_page.append(tip)
                         [t.send_message(tip, _id) for _id in telegram_id]
-        with open(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.txt') as f:
+        with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:
             for tip in tips_page:
                 f.write(f'{tip}\n')
         return (''), 204
@@ -187,7 +187,7 @@ def interval_download():
                         tip = f'{game_time} : {name} - {tips[key]}'
                         tips_page.append(tip)
                         [t.send_message(tip, _id) for _id in telegram_id]
-        with open(f'download_preds{time.strftime("%Y-%m-%d_%H-%M")}.txt') as f:
+        with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:
             for tip in tips_page:
                 f.write(f'{tip}\n')
         return (''), 204
