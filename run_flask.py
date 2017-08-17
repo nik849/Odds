@@ -2,7 +2,7 @@ import atexit
 import time
 
 from apscheduler.scheduler import Scheduler
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, send_file, session
 
 from odds.api import telegram
 from odds.config import (CONFIG, HOST_URL, configs, telegram_id, test_token,
@@ -103,8 +103,9 @@ def user_update():
 @app.route('/download', methods=['POST', 'GET'])
 def download():
     r = s.download(config=CONFIG)
-    r.to_csv(f'download_{time.strftime("%Y-%m-%d_%H-%M")}.csv')
-    return (''), 204
+    filename = f'download_{time.strftime("%Y-%m-%d_%H-%M")}.csv'
+    r.to_csv(filename)
+    return send_file(filename, as_attachment=True)
 
 
 @app.route('/download_preds', methods=['POST', 'GET'])
@@ -126,10 +127,11 @@ def download_preds():
                     if preds[key] != 0:
                         tip = f'{game_time} : {name} - {tips[key]}'
                         tips_page_all.append(tip)
-        with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:
+        filename = f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt'
+        with open(filename, 'w') as f:
             for tip in tips_page_all:
                 f.write(f'{tip}\n')
-        return (''), 204
+        return send_file(filename, as_attachment=True)
 
 
 @app.route('/hook', methods=['POST', 'GET'])
