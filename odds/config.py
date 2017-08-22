@@ -1,6 +1,8 @@
 HOST_URL = 'http://www.asianodds.com/past_200_asian_odds.asp'
-API_URL = 'https://api.telegram.org/'
+telegram_API_URL = 'https://api.telegram.org/'
+totalcorner_API_URL = 'https://api.totalcorner.com/v1/'
 WEBHOOK_URL = 'https://5ef47981.ngrok.io'
+totalcorner_test_token = '9cdffbb7438713b4'
 test_token = '415496075:AAFSnmY8YQpFbdnrhnIfcbnaF5bDtwV3z1c'
 telegram_id = ['276845594', '-1001134247694']
 CONFIG = {"query": None}

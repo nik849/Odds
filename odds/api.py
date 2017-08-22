@@ -1,7 +1,7 @@
 import requests
 
-from .config import API_URL
-from .errors import OddsError, TelegramTokenError
+from .config import telegram_API_URL, totalcorner_API_URL
+from .errors import OddsError, TelegramTokenError, TotalCornerTokenError
 
 
 class telegram:
@@ -24,7 +24,7 @@ class telegram:
         Method for making a request to Telegram API
         :param api_endpoint: Telegram API endpoint
         """
-        req_str = API_URL + 'bot' + self.token + '/' + api_endpoint
+        req_str = telegram_API_URL + 'bot' + self.token + '/' + api_endpoint
         response = requests.get(url=req_str, params=self.params)
         return response.json()
 
@@ -50,7 +50,7 @@ class telegram:
         Fetches new messages sent to the Bot.
         :return: array of json objects containing responses.
         """
-        req_str = API_URL + 'bot' + self.token + '/getUpdates'
+        req_str = telegram_API_URL + 'bot' + self.token + '/getUpdates'
         response = requests.get(url=req_str)
         data = response.json()
 
@@ -68,7 +68,7 @@ class telegram:
         Sets the webhook for the telegram bot.
         :param hook_url: webhook url, found in config
         """
-        req_str = API_URL + 'bot' + self.token + '/setWebhook'
+        req_str = telegram_API_URL + 'bot' + self.token + '/setWebhook'
         hook = hook_url + '/hook'
         params = {'url': hook}
         response = requests.get(url=req_str, params=params)
@@ -87,3 +87,44 @@ class telegram:
             print(criteria)
             return criteria
         return criteria
+
+
+class totalcorner():
+    """
+    Wrapper class for totalcorner API_URL
+    """
+    def __init__(self, token):
+        """
+        :param token: TotalCorner API token, Required.
+        """
+        if not token:
+            raise TotalCornerTokenError
+
+        self.token = token
+        self.params = {}
+
+    def _get(self, api_endpoint, **kwargs):
+        """
+        Method for making a request to TotalCorner API
+        :param api_endpoint: Totalcorner API endpoint
+        """
+        req_str = totalcorner_API_URL + api_endpoint
+        print(req_str)
+        response = requests.get(url=req_str, params=self.params)
+        return response.json()
+
+    def get_odds(self, **kwargs):
+        """
+        Method for retrieving odds from totalscore
+        """
+        if kwargs:
+            self.params.update(**kwargs)
+        self.params['token'] = self.token
+        self.params['type'] = 'inplay'
+
+        data = self._get('match/today', params=self.params)
+
+        if not data['success']:
+            raise OddsError(str(data['error']))
+            return 1
+        return data

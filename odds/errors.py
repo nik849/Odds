@@ -7,6 +7,15 @@ class TelegramTokenError(Exception):
         return self.msg
 
 
+class TotalCornerTokenError(Exception):
+    msg = 'Missing TotalCorner token, ' \
+          'visit:http://www.totalcorner.com/page/api ' \
+          'to obtain a token'
+
+    def __str__(self):
+        return self.msg
+
+
 class OddsBaseError(Exception):
     def __init__(self, msg):
         self.msg = msg
