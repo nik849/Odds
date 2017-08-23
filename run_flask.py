@@ -154,11 +154,14 @@ def handle_messages():
 
 @cron.interval_schedule(minutes=15)
 def interval_download():
+    global tips_page
+    time_now = time.strftime("%H")
+    if time_now >= 23:
+        tips_page = []
     with app.test_request_context():
         games = s.get_odds_obj()
         del games['Last 200 Started Games - Odds From 188bet.com']
         tables = []
-        global tips_page
         for name, game in games.items():
             print(name)
             p = predictions(game)
@@ -170,12 +173,14 @@ def interval_download():
                 for key in checks:
                     if preds[key] != 0:
                         tip = f'{game_time} : {name} - {tips[key]}'
-                        if tip not in tips_page: # TODO: sort out why it repeats
+                        if tip not in tips_page:
                             tips_page.append(tip)
                             [t.send_message(tip, _id) for _id in telegram_id]
         with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:
             for tip in tips_page:
                 f.write(f'{tip}\n')
+
+
         return (''), 204
 
 
