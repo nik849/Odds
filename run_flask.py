@@ -156,7 +156,7 @@ def handle_messages():
     return (''), 204
 
 
-@cron.interval_schedule(minutes=3)
+@cron.interval_schedule(minutes=15)
 def interval_download():
     global tips_page
     time_now = int(time.strftime("%H"))
