@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, send_file, session
 
 from odds.api import telegram
 from odds.config import (CONFIG, HOST_URL, configs, telegram_id, test_token,
-                         tips)
+                         totalcorner_test_token, tips)
 from odds.scraper import scrape
 from odds.utils import predictions
 
@@ -18,7 +18,8 @@ t = telegram(token=test_token)
 values = [0, 0, 0, 0, 0]
 cron.start()
 tips_page = []
-
+token = totalcorner_test_token
+# TODO: find at start games with odds in bet365 1.xx 4.xx 4.xxx and opposite and math with the range I gave you
 
 @app.route('/', methods=['POST', 'GET'])
 def home():
@@ -99,6 +100,10 @@ def user_update():
         checks = [0]
     return render_template('/config.html', configs=checks, users=telegram_id)
 
+@app.route('/token_update', methods=['POST', 'GET'])
+def token_update():
+    global token
+    token = request.form.get("token")
 
 @app.route('/download', methods=['POST', 'GET'])
 def download():
@@ -165,7 +170,7 @@ def interval_download():
                 for key in checks:
                     if preds[key] != 0:
                         tip = f'{game_time} : {name} - {tips[key]}'
-                        if tip not in tips_page:
+                        if tip not in tips_page: # TODO: sort out why it repeats
                             tips_page.append(tip)
                             [t.send_message(tip, _id) for _id in telegram_id]
         with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:
