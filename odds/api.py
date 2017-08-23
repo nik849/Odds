@@ -109,7 +109,6 @@ class totalcorner():
         :param api_endpoint: Totalcorner API endpoint
         """
         req_str = totalcorner_API_URL + api_endpoint
-        print(req_str)
         response = requests.get(url=req_str, params=self.params)
         return response.json()
 
@@ -127,4 +126,4 @@ class totalcorner():
         if not data['success']:
             raise OddsError(str(data['error']))
             return 1
-        return data
+        return data["data"]
