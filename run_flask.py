@@ -7,6 +7,7 @@ from flask import Flask, render_template, request, send_file, session
 from odds.api import telegram, totalcorner
 from odds.config import (CONFIG, HOST_URL, configs, telegram_id, test_token,
                          tips, totalcorner_test_token)
+from odds.errors import OddsError
 from odds.scraper import scrape
 from odds.utils import predictions
 
@@ -125,7 +126,6 @@ def download_preds():
         tables = []
         tips_page_all = []
         for name, game in games.items():
-            print(name)
             p = predictions(game)
             data, preds = p.return_predictions()
             tables.append(data)
@@ -163,13 +163,10 @@ def interval_download():
     if time_now >= 23:
         tips_page = []
     with app.test_request_context():
-        tc_teams = []
-        data = tc.get_odds()
-        for i in data:
-            tc_teams.append(i["h"])
-            tc_teams.append(i["a"])
 
+        tc_data = tc.get_odds()
         games = s.get_odds_obj()
+
         del games['Last 200 Started Games - Odds From 188bet.com']
         tables = []
         ao_teams = []
@@ -183,20 +180,31 @@ def interval_download():
             ao_teams.append(team_a)
             ao_teams.append(team_b)
 
-            # TODO: find the ht and ft goals and whether they are in AO.
             checks = configs  # session.get('checks_', None)
             if checks:
                 for key in checks:
                     if preds[key] != 0:
-                        tip = f'{game_time} : {name} - {team_a}, {team_b} :\
+                        tip = f'{game_time} : {name}, {team_a} vs {team_b}:\
                               {tips[key]}'
                         if tip not in tips_page:
                             tips_page.append(tip)
+        tc_tips = []
+        for match in tc_data:
+            if (match["h"] or match["a"]) in ao_teams:
+                try:
+                    tc_tip = f'InPlay: {match["h"]} vs {match["a"]}, \
+                    Pre-Match Odds: {match["p_odds"]}, \
+                    InPlay Odds: {match["i_odds"]}'
+                    print(tc_tip)
+                except Exception as e:
+                    raise OddsError(str(data['error']))
 
-        matches = list(set(ao_teams) & set(tc_teams))
-        print(matches)
-        # TODO: Find the correspondind data from these matches...
+                if tc_tip not in tc_tips:
+                    tc_tips.append(tc_tip)
+
         for tip in tips_page:
+            t.send_message(tip, telegram_id)
+        for tip in tc_tips:
             t.send_message(tip, telegram_id)
 
         with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:

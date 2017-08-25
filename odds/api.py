@@ -120,8 +120,27 @@ class totalcorner():
             self.params.update(**kwargs)
         self.params['token'] = self.token
         self.params['type'] = 'inplay'
+        self.params['columns'] = "events,odds"
 
         data = self._get('match/today', params=self.params)
+
+        if not data['success']:
+            raise OddsError(str(data['error']))
+            return 1
+        return data["data"]
+
+    def get_match_odds(self, match_id, **kwargs):
+        """
+        Method for retrieving odds for a specific match
+        """
+        self.match_id = match_id
+        if kwargs:
+            self.params.update(**kwargs)
+        self.params['token'] = self.token
+        self.params['columns'] = ['events', 'odds']
+
+        req_str = f'matchodds/{self.match_id}'
+        data = self._get(req_str, params=self.params)
 
         if not data['success']:
             raise OddsError(str(data['error']))
