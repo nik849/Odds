@@ -210,6 +210,8 @@ def interval_download():
         with open(f'preds{time.strftime("%Y-%m-%d_%H-%M")}.txt', 'w') as f:
             for tip in tips_page:
                 f.write(f'{tip}\n')
+            for tip in tc_tips:
+                f.write(f'{tip}\n')
         return (''), 204
 
 
