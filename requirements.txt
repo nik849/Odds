@@ -28,5 +28,5 @@ six==1.10.0
 tzlocal==1.4
 urllib3==1.21.1
 webencodings==0.5.1
-Werkzeug==0.12.2
+Werkzeug==0.15.3
 yarl==0.12.0
